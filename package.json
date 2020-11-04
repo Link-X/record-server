@@ -1,0 +1,27 @@
+{
+  "name": "record-server",
+  "version": "0.0.1",
+  "description": "It's a record-server",
+  "main": "index.ts",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^14.14.6",
+    "@typescript-eslint/eslint-plugin": "^4.6.1",
+    "@typescript-eslint/parser": "^4.6.1",
+    "eslint": "^7.12.1",
+    "eslint-config-standard-with-typescript": "^19.0.1",
+    "nodemon": "^2.0.6",
+    "typescript": "^4.0.5"
+  },
+  "scripts": {
+    "start": "nodemon ./src/index.ts",
+    "build": "tsc",
+    "debug": "node ./dist/index.js"
+  },
+  "keywords": [
+    "record-server",
+    "record"
+  ],
+  "author": "xdb",
+  "license": "ISC"
+}

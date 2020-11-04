@@ -1,0 +1,25 @@
+{
+  "restartable": "rs",
+  "verbose": false,
+  "debug": false,
+  "exec": "ts-node  ./src/index.ts",
+  "ignore": [
+    ".git",
+    "dist",
+    "node_modules",
+    "./test",
+    "**/*.d.ts",
+    "*.test.ts",
+    "test/**/*"
+  ],
+  "execMap": {
+    "": "node",
+    "js": "node --harmony"
+  },
+  "events": {
+    "restart": ""
+  },
+  "watch": ["./**"],
+  "ext": "js json ts tsx",
+  "inspect": true
+}
