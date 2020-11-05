@@ -11,8 +11,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const Koa = require("koa");
 const app = new Koa();
-app.use((ctx) => __awaiter(void 0, void 0, void 0, function* () {
+app.use((ctx, ctq) => __awaiter(void 0, void 0, void 0, function* () {
     console.log(ctx);
 }));
+console.log(1234);
 app.listen(3001);
 //# sourceMappingURL=index.js.map
