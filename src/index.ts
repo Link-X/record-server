@@ -1,9 +1,9 @@
-import a from './a'
+import * as Koa from 'koa';
 
-const abc = (props: string): string => {
-  return props;
-};
+const app = new Koa()
 
-console.log(abc("111111"));
+app.use(async ctx => {
+  console.log(ctx)
+})
 
-console.log(a(11))
+app.listen(3001)

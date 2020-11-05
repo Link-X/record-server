@@ -3,8 +3,11 @@
   "version": "0.0.1",
   "description": "It's a record-server",
   "main": "index.ts",
-  "dependencies": {},
+  "dependencies": {
+    "koa": "^2.13.0"
+  },
   "devDependencies": {
+    "@types/koa": "^2.11.6",
     "@types/node": "^14.14.6",
     "@typescript-eslint/eslint-plugin": "^4.6.1",
     "@typescript-eslint/parser": "^4.6.1",

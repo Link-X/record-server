@@ -1,9 +1,18 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-const a_1 = require("./a");
-const abc = (props) => {
-    return props;
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
 };
-console.log(abc("111111"));
-console.log(a_1.default(11));
+Object.defineProperty(exports, "__esModule", { value: true });
+const Koa = require("koa");
+const app = new Koa();
+app.use((ctx) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(ctx);
+}));
+app.listen(3001);
 //# sourceMappingURL=index.js.map

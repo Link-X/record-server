@@ -9,6 +9,6 @@
         "watch": true,
         "strict": false
     },
-    "include": ["src"],
+    "include": ["src/**/*"],
     "exclude": ["node_modules"]
 }
