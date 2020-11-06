@@ -11,8 +11,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const Koa = require("koa");
 const app = new Koa();
+const abc = () => {
+    return new Promise((res, rej) => {
+        res(1234);
+    });
+};
 app.use((ctx, ctq) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(ctx);
+    const a = yield abc();
+    ctx.body = 'hell world';
 }));
 console.log(1234);
 app.listen(3001);

@@ -1,11 +1,20 @@
-import * as Koa from 'koa';
+import * as Koa from 'koa'
+const bodyparser = require('koa-bodyparser')
+
+import amqp from './amqp-send'
 
 const app = new Koa()
+app.use(bodyparser())
+
+const amqpObj = new amqp()
 
 app.use(async (ctx, ctq) => {
-  console.log(ctx)
+    const msg = await amqpObj.createChannel('hello', 'hello world', 'success')
+    ctx.body = msg.toString()
 })
 
-console.log(1234)
+app.on('error', (err) => {
+    console.log(err)
+})
 
 app.listen(3001)
