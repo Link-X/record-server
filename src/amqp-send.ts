@@ -1,53 +1,26 @@
 import * as amqp from 'amqplib'
+import amqpBase from './amqp-base'
 
-class amqpObj {
-    public conn: amqp.Connection
-    public init: () => Promise<amqp.Connection>
-    public createChannel: <T>(msgName: string, msg: T, backName: string) => Promise<any>
-    public accept: (msgName: string, returnName: string) => Promise<any>
-
+class amqpSend extends amqpBase {
     constructor() {
-        this.init = async () => {
-            this.conn = await amqp.connect('amqp://localhost')
-            return this.conn
-        }
-        this.createChannel = async <T>(msgName: string, msg: T, backName: string) => {
-            if (!this.conn) {
-                return
-            }
-            return new Promise(async (resolve, reject) => {
-                const ch = await this.conn.createChannel()
-                await ch.assertQueue(backName, { durable: false })
-                ch.consume(
-                    backName,
-                    (msg) => {
-                        resolve(msg)
-                        ch.close()
-                    },
-                    { noAck: true }
-                )
-                ch.sendToQueue(msgName, Buffer.from(msg), { replyTo: backName, correlationId: '1' })
-            })
-        }
-        this.accept = async (msgName: string, returnName: string) => {
-            process.once('SIGINT', () => {
-                this.conn.close()
-            })
+        super()
+    }
+    createChannel = async <T>(msgName: string, msg: T, backName: string): Promise<amqp.ConsumeMessage> => {
+        return new Promise(async (resolve, reject) => {
+            await this.connect()
             const ch = await this.conn.createChannel()
-            await ch.assertQueue(msgName, { durable: false })
+            await ch.assertQueue(backName, { durable: false })
             ch.consume(
-                msgName,
+                backName,
                 (msg) => {
-                    ch.sendToQueue(msg.properties.replyTo, Buffer.from('接收完毕'), {
-                        correlationId: msg.properties.correlationId,
-                    })
-                    ch.ack(msg)
+                    resolve(msg)
+                    ch.close()
                 },
                 { noAck: true }
             )
-        }
-        this.init()
+            ch.sendToQueue(msgName, Buffer.from(msg), { replyTo: backName, correlationId: '1' })
+        })
     }
 }
 
-export default amqpObj
+export default amqpSend

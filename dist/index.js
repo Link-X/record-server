@@ -10,16 +10,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Koa = require("koa");
+const KoaRouter = require("koa-router");
+const bodyparser = require('koa-bodyparser');
+const amqp_send_1 = require("./amqp-send");
+const amqp_accept_1 = require("./amqp-accept");
 const app = new Koa();
-const abc = () => {
-    return new Promise((res, rej) => {
-        res(1234);
-    });
-};
-app.use((ctx, ctq) => __awaiter(void 0, void 0, void 0, function* () {
-    const a = yield abc();
-    ctx.body = 'hell world';
+const router = new KoaRouter();
+const send = new amqp_send_1.default();
+const accept = new amqp_accept_1.default();
+app.use(bodyparser());
+(() => __awaiter(void 0, void 0, void 0, function* () {
+    yield accept.accept('hello');
+}))();
+router.get('/', (ctx, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const msg = yield send.createChannel('hello', 'hello world', 'success');
+    console.log('msg', msg);
+    ctx.body = msg.content.toString();
 }));
-console.log(1234);
-app.listen(3001);
+app.on('error', (err) => {
+    console.log(err);
+});
+app.use(router.routes()).use(router.allowedMethods()).listen(3001);
 //# sourceMappingURL=index.js.map
