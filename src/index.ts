@@ -18,6 +18,7 @@ app.use(bodyparser())
 router.get('/', async (ctx, next) => {
     const msg = await send.createChannel('hello', 'hello world', 'success')
     ctx.body = msg.content.toString()
+    next()
 })
 
 app.on('error', (err) => {
