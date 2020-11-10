@@ -1,5 +1,5 @@
 import * as amqp from 'amqplib'
-import amqpBase from './amqp-base'
+import amqpBase from './base'
 
 class amqpSend extends amqpBase {
     constructor() {

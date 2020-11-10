@@ -2,13 +2,13 @@ import * as Koa from 'koa'
 import * as KoaRouter from 'koa-router'
 const bodyparser = require('koa-bodyparser')
 
-import amqpSend from './amqp-send'
-import amqpAccept from './amqp-accept'
+import { amqpAccept, amqpSend } from './amqp'
 
 const app = new Koa()
 const router = new KoaRouter()
-const send = new amqpSend()
+
 const accept = new amqpAccept()
+const send = new amqpSend()
 
 app.use(bodyparser())
 ;(async () => {
@@ -17,7 +17,6 @@ app.use(bodyparser())
 
 router.get('/', async (ctx, next) => {
     const msg = await send.createChannel('hello', 'hello world', 'success')
-    console.log('msg', msg)
     ctx.body = msg.content.toString()
 })
 
@@ -26,5 +25,3 @@ app.on('error', (err) => {
 })
 
 app.use(router.routes()).use(router.allowedMethods()).listen(3001)
-
-

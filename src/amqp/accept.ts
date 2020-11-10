@@ -1,4 +1,4 @@
-import amqpBase from './amqp-base'
+import amqpBase from './base'
 
 class amqpAccept extends amqpBase {
     constructor() {
@@ -19,7 +19,7 @@ class amqpAccept extends amqpBase {
                 })
                 ch.ack(msg)
             },
-            { noAck: true }
+            { noAck: false }
         )
     }
 }
