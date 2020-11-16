@@ -7,14 +7,26 @@ import { amqpAccept, amqpSend } from './utils'
 const app = new Koa()
 const router = new KoaRouter()
 
-const accept = new amqpAccept({ acceptName: 'recordData' })
+new amqpAccept({ acceptName: 'recordData' })
 const send = new amqpSend()
 
 app.use(bodyparser())
 
-router.get('/', async (ctx, next) => {
-    const msg = await send.createChannel('recordData', { data: [{ a: 1 }] }, 'success')
-    ctx.body = msg.content.toString()
+router.post('/send-dom-record', async (ctx, next) => {
+    const { body } = ctx.request as any
+    try {
+        const msg = await send.createChannel('recordData', body, 'success')
+        ctx.body = msg.content.toString()
+        ctx.body = { code: 0 }
+        next()
+    } catch (err) {
+        ctx.body = { code: -1 }
+        next()
+    }
+})
+
+router.post('/send-error-record', async (ctx, next) => {
+    const { body } = ctx.request as any
     next()
 })
 

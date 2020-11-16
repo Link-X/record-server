@@ -11,19 +11,23 @@ class amqpSend extends amqpBase {
         return new Promise(async (resolve, reject) => {
             await this.connect()
             const ch = await this.conn.createChannel()
-            await ch.assertQueue(backName, { durable: false })
-            ch.consume(
-                backName,
-                (backMsg) => {
-                    resolve(backMsg)
-                    ch.close()
-                },
-                { noAck: true }
-            )
-            ch.sendToQueue(msgName, Buffer.from(JSON.stringify(msg)), {
-                replyTo: backName,
-                correlationId: UUID.v1(),
-            })
+            try {
+                await ch.assertQueue(backName, { durable: false })
+                ch.consume(
+                    backName,
+                    (backMsg) => {
+                        resolve(backMsg)
+                        ch.close()
+                    },
+                    { noAck: true }
+                )
+                ch.sendToQueue(msgName, Buffer.from(JSON.stringify(msg)), {
+                    replyTo: backName,
+                    correlationId: UUID.v1(),
+                })
+            } catch (err) {
+                reject(err)
+            }
         })
     }
 }

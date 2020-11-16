@@ -26,7 +26,6 @@ class amqpAccept extends amqpBase {
         ch.consume(
             acceptName,
             (acceptMsg) => {
-                console.log(acceptMsg.content.toString())
                 ch.sendToQueue(acceptMsg.properties.replyTo, Buffer.from('0'), {
                     correlationId: acceptMsg.properties.correlationId,
                 })
