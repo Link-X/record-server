@@ -1,4 +1,6 @@
 import * as amqp from 'amqplib'
+import * as UUID from 'uuid'
+
 import amqpBase from './base'
 
 class amqpSend extends amqpBase {
@@ -12,13 +14,16 @@ class amqpSend extends amqpBase {
             await ch.assertQueue(backName, { durable: false })
             ch.consume(
                 backName,
-                (msg) => {
-                    resolve(msg)
+                (backMsg) => {
+                    resolve(backMsg)
                     ch.close()
                 },
                 { noAck: true }
             )
-            ch.sendToQueue(msgName, Buffer.from(msg), { replyTo: backName, correlationId: '1' })
+            ch.sendToQueue(msgName, Buffer.from(JSON.stringify(msg)), {
+                replyTo: backName,
+                correlationId: UUID.v1(),
+            })
         })
     }
 }
