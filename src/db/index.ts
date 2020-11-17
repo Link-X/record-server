@@ -1,14 +1,18 @@
 import * as mysql from 'mysql'
+const mybatis = require('mybatis-node')
+
 import * as os from 'os'
 import * as path from 'path'
 
 const pool = mysql.createPool({
-    host: '39.108.184.64',
+    host: 'localhost',
     user: 'root',
-    password: 'React1010',
-    database: 'xChat',
+    password: 'root',
+    database: 'recordDb',
     useConnectionPooling: true,
     characterEncoding: 'utf8mb4',
+    typeCast: true,
+    multipleStatements: true,
 })
 
 function connect() {
@@ -32,5 +36,6 @@ function connect() {
 }
 
 const connectObj = new connect()
+const sessionFactory  = new mybatis(pool).process(dir_xml);
 
 export default connectObj
